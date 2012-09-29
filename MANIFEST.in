@@ -1,0 +1,2 @@
+include **.rst
+recursive-include pyramid_persona *.ico *.png *.css *.gif *.jpg *.pt *.txt *.mak *.mako *.js *.html *.xml
