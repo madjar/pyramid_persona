@@ -1,3 +1,5 @@
 .idea
 *.pyc
 pyramid_persona.egg-info/
+build/
+dist/

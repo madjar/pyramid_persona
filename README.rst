@@ -4,8 +4,11 @@ pyramid_persona README
 `pyramid_persona` let you quickly set up authentication using persona_ on your pyramid_ project. It aims at giving as
 much as possible with as little configuration as possible, while still letting you customize if you want.
 
+You can find it on pypi_.
+
 .. _persona: https://login.persona.org/
 .. _pyramid: http://www.pylonsproject.org/
+.. _pypi: http://pypi.python.org/pypi/pyramid_persona
 
 Very basic usage
 ----------------
