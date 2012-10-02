@@ -2,13 +2,14 @@ pyramid_persona README
 ======================
 
 `pyramid_persona` let you quickly set up authentication using persona_ on your pyramid_ project. It aims at giving as
-much as possible with as little configuration as possible, while still letting you customize if you want.
+much as possible with as little configuration as possible, while still letting you customize if you want. If you want to see some screenshots of the demo app, take a look at this `blog post`_.
 
 You can find it on pypi_.
 
 .. _persona: https://login.persona.org/
 .. _pyramid: http://www.pylonsproject.org/
 .. _pypi: http://pypi.python.org/pypi/pyramid_persona
+.. _`blog post`: http://compiletoi.net/quick-authentication-on-pyramid-with-persona.html
 
 Very basic usage
 ----------------
