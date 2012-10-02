@@ -1,10 +1,10 @@
-pyramid_persona README
-======================
+pyramid_persona
+===============
 
 `pyramid_persona` let you quickly set up authentication using persona_ on your pyramid_ project. It aims at giving as
 much as possible with as little configuration as possible, while still letting you customize if you want. If you want to see some screenshots of the demo app, take a look at this `blog post`_.
 
-You can find it on pypi_.
+You can find it on pypi_ as `pyramid_persona`.
 
 .. _persona: https://login.persona.org/
 .. _pyramid: http://www.pylonsproject.org/
@@ -98,6 +98,13 @@ persona.logout_path
     The logout route path. Optional, default is '/logout'.
 
 .. _`persona documentation`: https://developer.mozilla.org/en-US/docs/Persona/Remote_Verification_API
+
+Python 3 compatibility
+----------------------
+
+Sadly, this library depends on pyBrowserID, which is not compatible
+with python 3. I'll look into it, and hopefully, it'll be an easy
+port.
 
 Contact
 -------
