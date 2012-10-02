@@ -50,18 +50,18 @@ def includeme(config):
     login_route = settings.get('persona.login_route', 'login')
     login_path = settings.get('persona.login_path', '/login')
     config.add_route(login_route, login_path)
-    config.add_view(login, route_name=login_route, check_csrf=True)
+    config.add_view(login, route_name=login_route)
 
     logout_route = settings.get('persona.logout_route', 'logout')
     logout_path = settings.get('persona.logout_path', '/logout')
     config.add_route(logout_route, logout_path)
-    config.add_view(logout, route_name=logout_route, check_csrf=True)
+    config.add_view(logout, route_name=logout_route)
 
     # A simple 403 view, with a login button.
     config.add_forbidden_view(forbidden)
 
     # A quick access to the login button
-    config.add_request_method(button, 'persona_button', reify=True)
+    config.set_request_property(button, 'persona_button', reify=True)
 
     # The javascript needed by persona
-    config.add_request_method(js, 'persona_js', reify=True)
+    config.set_request_property(js, 'persona_js', reify=True)
