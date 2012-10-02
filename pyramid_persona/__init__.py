@@ -1,7 +1,7 @@
 from pyramid.authentication import SessionAuthenticationPolicy
 from pyramid.authorization import ACLAuthorizationPolicy
 from pyramid.config import ConfigurationError
-from pyramid.interfaces import ISessionFactory
+from pyramid.interfaces import ISessionFactory, PHASE2_CONFIG
 from pyramid.session import UnencryptedCookieSessionFactoryConfig
 from pyramid_persona.utils import button, js
 from pyramid_persona.views import login, logout, forbidden
@@ -28,10 +28,10 @@ def includeme(config):
                                  'See https://developer.mozilla.org/en-US/docs/Persona/Security_Considerations for details.')
 
     # Default authentication and authorization policies. Those are needed to remember the userid.
-    authn_policy = SessionAuthenticationPolicy()
     authz_policy = ACLAuthorizationPolicy()
-    config.set_authentication_policy(authn_policy)
     config.set_authorization_policy(authz_policy)
+    authn_policy = SessionAuthenticationPolicy()
+    config.set_authentication_policy(authn_policy)
 
     # A default session factory, needed for the csrf check.
 
@@ -43,7 +43,7 @@ def includeme(config):
     def check():
         if config.registry.queryUtility(ISessionFactory) == session_factory and not secret:
             raise ConfigurationError('If you do not override the session factory, you have to provide a persona.secret settings.')
-    config.action(None, check)
+    config.action(None, check, order=PHASE2_CONFIG)
 
 
     # Login and logout views.

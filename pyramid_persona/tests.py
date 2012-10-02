@@ -20,12 +20,13 @@ class SecurityPolicy(DummySecurityPolicy):
 
 class ViewTests(unittest.TestCase):
     def setUp(self):
-        self.config = testing.setUp()
+        self.config = testing.setUp(autocommit=False)
         self.config.add_settings({'persona.audience': 'http://someaudience'})
-#        self.config.include('pyramid_persona')
+        self.config.include('pyramid_persona')
         self.security_policy = SecurityPolicy()
-        self.config.registry.registerUtility(self.security_policy, IAuthorizationPolicy)
-        self.config.registry.registerUtility(self.security_policy, IAuthenticationPolicy)
+        self.config.set_authorization_policy(self.security_policy)
+        self.config.set_authentication_policy(self.security_policy)
+        self.config.commit()
 
     def tearDown(self):
         testing.tearDown()
@@ -36,7 +37,9 @@ class ViewTests(unittest.TestCase):
         email = data['email']
         assertion = data['assertion']
 
-        request = testing.DummyRequest({'assertion': assertion})
+        request = testing.DummyRequest()
+        request.params['assertion'] = assertion
+        request.params['csrf_token'] = request.session.get_csrf_token()
         response = login(request)
 
         self.assertEqual(response.status_code, 200)
@@ -45,6 +48,7 @@ class ViewTests(unittest.TestCase):
     def test_logout(self):
         from .views import logout
         request = testing.DummyRequest()
+        request.params['csrf_token'] = request.session.get_csrf_token()
         response = logout(request)
 
         self.assertEqual(response.status_code, 200)
