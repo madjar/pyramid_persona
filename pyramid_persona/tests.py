@@ -1,6 +1,7 @@
 import unittest
 from pyramid.interfaces import IAuthorizationPolicy, IAuthenticationPolicy
 from pyramid.testing import DummySecurityPolicy
+from pyramid.httpexceptions import HTTPBadRequest
 import requests
 
 from pyramid import testing
@@ -44,6 +45,19 @@ class ViewTests(unittest.TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(self.security_policy.remembered, email)
+
+    def test_login_fails_with_bad_audience(self):
+        from .views import login
+        data = requests.get('http://personatestuser.org/email_with_assertion/http%3A%2F%2Fbadaudience').json
+        email = data['email']
+        assertion = data['assertion']
+
+        request = testing.DummyRequest()
+        request.params['assertion'] = assertion
+        request.params['csrf_token'] = request.session.get_csrf_token()
+
+        self.assertRaises(HTTPBadRequest, login, request)
+        self.assertEqual(self.security_policy.remembered, None)
 
     def test_logout(self):
         from .views import logout
