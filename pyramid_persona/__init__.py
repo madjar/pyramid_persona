@@ -6,6 +6,8 @@ from pyramid.session import UnencryptedCookieSessionFactoryConfig
 from pyramid_persona.utils import button, js
 from pyramid_persona.views import login, logout, forbidden
 
+import browserid
+
 
 def includeme(config):
     """Include persona settings into a pyramid config.
@@ -45,6 +47,10 @@ def includeme(config):
             raise ConfigurationError('If you do not override the session factory, you have to provide a persona.secret settings.')
     config.action(None, check, order=PHASE2_CONFIG)
 
+    # Construct a browserid Verifier using the configured audience.
+    # This will pre-compile some regexes to reduce per-request overhead.
+    audience = config.registry.settings['persona.audience']
+    config.registry['persona.verifier'] = browserid.RemoteVerifier(audience)
 
     # Login and logout views.
     login_route = settings.get('persona.login_route', 'login')
