@@ -25,5 +25,5 @@ def js(request):
         'logout': '/logout',
         'csrf_token': request.session.get_csrf_token()
     }
-    template = markupsafe.Markup(pkg_resources.resource_string('pyramid_persona', 'templates/persona.js'))
+    template = markupsafe.Markup(pkg_resources.resource_string('pyramid_persona', 'templates/persona.js').decode())
     return template % data

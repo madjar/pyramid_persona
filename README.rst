@@ -102,9 +102,8 @@ persona.logout_path
 Python 3 compatibility
 ----------------------
 
-Sadly, this library depends on pyBrowserID, which is not compatible
-with python 3. I'll look into it, and hopefully, it'll be an easy
-port.
+Experimental support for python 3 is available in PyBrowserID, so
+python 3 compatibilty is on its way.
 
 Contact
 -------
