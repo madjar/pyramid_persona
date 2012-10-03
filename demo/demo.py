@@ -27,7 +27,7 @@ def template(request):
 if __name__ == '__main__':
     settings = {
         'persona.secret': 'some secret',
-        'persona.audience': 'http://localhost:8080',
+        'persona.audiences': 'http://localhost:8080',
         'mako.directories': '.',
     }
     config = Configurator(settings=settings)

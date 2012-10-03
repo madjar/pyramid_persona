@@ -22,7 +22,7 @@ Then, we need two little lines in your config files : a secret used to sign cook
 the hostname and port of your website (this is needed for security reasons)::
 
     persona.secret = This is some secret string
-    persona.audience = http://localhost:6543
+    persona.audiences = http://localhost:6543
 
 There, we're done. We now have a nice forbidden view with a persona login button.
 
@@ -82,8 +82,8 @@ You can override any policy or view defined by `pyramid_persona` by defining the
 persona.secret
     A secret string used to sign cookies. Required only if you do not defined another session factory.
 
-persona.audience
-    The protocol, domain name, and port of your site, as defined in the `persona documentation`_. Required.
+persona.audiences
+    The protocol, domain name, and port of your site, as defined in the `persona documentation`_. Can contain more than one value. Required.
 
 persona.login_route
     The login route name. Optional, default is 'login'.

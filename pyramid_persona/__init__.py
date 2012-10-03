@@ -1,8 +1,10 @@
+import warnings
 from pyramid.authentication import SessionAuthenticationPolicy
 from pyramid.authorization import ACLAuthorizationPolicy
 from pyramid.config import ConfigurationError
 from pyramid.interfaces import ISessionFactory, PHASE2_CONFIG
 from pyramid.session import UnencryptedCookieSessionFactoryConfig
+from pyramid.settings import aslist
 from pyramid_persona.utils import button, js
 from pyramid_persona.views import login, logout, forbidden
 
@@ -25,7 +27,12 @@ def includeme(config):
     """
     settings = config.get_settings()
 
-    if not 'persona.audience' in settings:
+    if 'persona.audience' in settings:
+        settings['persona.audiences'] = settings['persona.audience']
+        warnings.warn('persona.audience has been changed to persona.audiences, and may accept more than one value. '
+                      'Please update you config file accordingly.', stacklevel=3)
+
+    if not 'persona.audiences' in settings:
         raise ConfigurationError('Missing persona.audience settings. This is needed for security reasons. '
                                  'See https://developer.mozilla.org/en-US/docs/Persona/Security_Considerations for details.')
 
@@ -47,10 +54,12 @@ def includeme(config):
             raise ConfigurationError('If you do not override the session factory, you have to provide a persona.secret settings.')
     config.action(None, check, order=PHASE2_CONFIG)
 
+
+
     # Construct a browserid Verifier using the configured audience.
     # This will pre-compile some regexes to reduce per-request overhead.
-    audience = config.registry.settings['persona.audience']
-    config.registry['persona.verifier'] = browserid.RemoteVerifier(audience)
+    audiences = aslist(config.registry.settings['persona.audiences'])
+    config.registry['persona.verifier'] = browserid.RemoteVerifier(audiences)
 
     # Login and logout views.
     login_route = settings.get('persona.login_route', 'login')

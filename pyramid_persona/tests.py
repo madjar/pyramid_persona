@@ -22,7 +22,7 @@ class SecurityPolicy(DummySecurityPolicy):
 class ViewTests(unittest.TestCase):
     def setUp(self):
         self.config = testing.setUp(autocommit=False)
-        self.config.add_settings({'persona.audience': 'http://someaudience'})
+        self.config.add_settings({'persona.audiences': 'http://someaudience'})
         self.config.include('pyramid_persona')
         self.security_policy = SecurityPolicy()
         self.config.set_authorization_policy(self.security_policy)
