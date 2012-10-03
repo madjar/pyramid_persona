@@ -1,8 +1,9 @@
-import browserid
 import pkg_resources
 from pyramid.httpexceptions import HTTPBadRequest
 from pyramid.response import Response
 from pyramid.security import remember, forget
+
+import browserid.errors
 
 
 def _check_csrf_token(request):
@@ -16,7 +17,11 @@ def _check_csrf_token(request):
 def login(request):
     """View to check the persona assertion and remember the user"""
     _check_csrf_token(request)
-    data = browserid.verify(request.POST['assertion'], request.registry.settings['persona.audience'])
+    verifier = request.registry['persona.verifier']
+    try:
+        data = verifier.verify(request.POST['assertion'])
+    except (ValueError, browserid.errors.TrustError):
+        raise HTTPBadRequest('invalid assertion')
     headers = remember(request, data['email'])
     return Response(headers=headers)
 
