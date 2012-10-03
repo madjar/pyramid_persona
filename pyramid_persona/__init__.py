@@ -8,8 +8,6 @@ from pyramid.settings import aslist
 from pyramid_persona.utils import button, js
 from pyramid_persona.views import login, logout, forbidden
 
-import browserid
-
 
 def includeme(config):
     """Include persona settings into a pyramid config.
@@ -55,11 +53,12 @@ def includeme(config):
     config.action(None, check, order=PHASE2_CONFIG)
 
 
-
     # Construct a browserid Verifier using the configured audience.
     # This will pre-compile some regexes to reduce per-request overhead.
-    audiences = aslist(config.registry.settings['persona.audiences'])
-    config.registry['persona.verifier'] = browserid.RemoteVerifier(audiences)
+    verifier_factory = config.maybe_dotted(settings.get('persona.verifier',
+                                                        'browserid.RemoteVerifier'))
+    audiences = aslist(settings['persona.audiences'])
+    config.registry['persona.verifier'] = verifier_factory(audiences)
 
     # Login and logout views.
     login_route = settings.get('persona.login_route', 'login')

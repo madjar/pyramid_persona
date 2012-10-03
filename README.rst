@@ -85,6 +85,9 @@ persona.secret
 persona.audiences
     The protocol, domain name, and port of your site, as defined in the `persona documentation`_. Can contain more than one value. Required.
 
+persona.verifier
+    The doted python name of the BrowserID assertion verifier. Optional. Default is 'browserid.RemoteVerifier'. Another possible value could be 'browserid.LocalVerifier' (not recommended for now).
+
 persona.login_route
     The login route name. Optional, default is 'login'.
 
