@@ -1,5 +1,5 @@
 $(function() {
-    $('#signin').click(function() { navigator.id.request(); return false;});
+    $('#signin').click(function() { navigator.id.request(%(request_params)s); return false;});
 
     $('#signout').click(function() { navigator.id.logout(); return false;});
 

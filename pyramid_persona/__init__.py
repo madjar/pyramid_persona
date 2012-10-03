@@ -1,3 +1,4 @@
+import json
 import warnings
 from pyramid.authentication import SessionAuthenticationPolicy
 from pyramid.authorization import ACLAuthorizationPolicy
@@ -59,6 +60,14 @@ def includeme(config):
                                                         'browserid.RemoteVerifier'))
     audiences = aslist(settings['persona.audiences'])
     config.registry['persona.verifier'] = verifier_factory(audiences)
+
+    # Parameters for the request API call
+    request_params = {}
+    for option in ('privacyPolicy', 'siteLogo', 'siteName', 'termsOfService'):
+        setting_name = 'persona.%s'%option
+        if setting_name in settings:
+            request_params[option] = settings[setting_name]
+    config.registry['persona.request_params'] = json.dumps(request_params)
 
     # Login and logout views.
     login_route = settings.get('persona.login_route', 'login')

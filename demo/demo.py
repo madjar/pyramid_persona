@@ -29,6 +29,9 @@ if __name__ == '__main__':
         'persona.secret': 'some secret',
         'persona.audiences': 'http://localhost:8080',
         'mako.directories': '.',
+        'persona.siteName': 'Super demo app',
+        'persona.privacyPolicy': '/nonExistentPrivacy.html',
+        'persona.termsOfService': '/nonExistentTos.html',
     }
     config = Configurator(settings=settings)
     config.include('pyramid_persona')

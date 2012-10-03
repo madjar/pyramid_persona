@@ -23,7 +23,8 @@ def js(request):
         'user': user,
         'login': '/login',
         'logout': '/logout',
-        'csrf_token': request.session.get_csrf_token()
+        'csrf_token': request.session.get_csrf_token(),
+        'request_params': markupsafe.Markup(request.registry['persona.request_params']),
     }
     template = markupsafe.Markup(pkg_resources.resource_string('pyramid_persona', 'templates/persona.js').decode())
     return template % data
