@@ -1,2 +1,3 @@
-include **.rst
+include **.rst CHANGES
 recursive-include pyramid_persona *.js *.html
+recursive-include demo *.mako *.py

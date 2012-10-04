@@ -12,11 +12,13 @@ requires = [
     ]
 
 setup(name='pyramid_persona',
-      version='1.0',
+      version='1.1',
       description='pyramid_persona',
       long_description=README + '\n\n' +  CHANGES,
       classifiers=[
         "Programming Language :: Python",
+        "Programming Language :: Python :: 2",
+        "Programming Language :: Python :: 3",
         "Framework :: Pyramid",
         "Topic :: Internet :: WWW/HTTP",
         ],

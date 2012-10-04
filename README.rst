@@ -128,12 +128,6 @@ persona.logout_route
 persona.logout_path
     The logout route path. Optional, default is '/logout'.
 
-Python 3 compatibility
-----------------------
-
-Experimental support for python 3 is available in PyBrowserID, so
-python 3 compatibilty is on its way.
-
 Contact
 -------
 
