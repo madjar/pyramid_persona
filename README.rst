@@ -1,8 +1,13 @@
 pyramid_persona
 ===============
 
-`pyramid_persona` let you quickly set up authentication using persona_ on your pyramid_ project. It aims at giving as
-much as possible with as little configuration as possible, while still letting you customize if you want. If you want to see some screenshots of the demo app, take a look at this `blog post`_.
+`pyramid_persona` let you quickly set up authentication using persona_
+on your pyramid_ project. It provides a way to conveniently replace
+the login form and all the processing and security concerns that comes
+with it. It aims at giving as much as possible with as little
+configuration as possible, while still letting you customize if you
+want. If you want to see some screenshots of the demo app, take a look
+at this `blog post`_.
 
 You can find it on pypi_ as `pyramid_persona`.
 
@@ -62,6 +67,14 @@ your login and logout button the `signin` and `signout` classes. For example ::
 What it does
 ------------
 
+`pyramid_persona` *is* a login system. It replaces login forms and
+views, and the need to handle passwords.
+
+`pyramid_persona` *is not* an authentication policy. It only handles
+the login process and requires an authentication policy to remember
+the user between requests (`SessionAuthenticationPolicy` is used by
+default).
+
 Here is, in details, what including `pyramid_persona` does :
 
 - it defines an authentication policy, an authorization policy, and a session factory     (this is needed for csrf
@@ -71,6 +84,9 @@ Here is, in details, what including `pyramid_persona` does :
 - it adds a `persona_button` request attribute containing html code for quickly putting a login button.
 - it defines the `/login` and `/logout` views to handle the persona workflow.
 - it defines a basic forbidden view with a login button.
+
+You can replace any part you like if the default behaviour doesn't
+work for you and the configuration isn't enough.
 
 Configuration
 -------------
@@ -127,6 +143,26 @@ persona.logout_route
 
 persona.logout_path
     The logout route path. Optional, default is '/logout'.
+
+
+Resources
+---------
+
+These blog posts contain information that is out of the scope of this
+documentation, but might be useful.
+
+`Quick authentication on pyramid with persona`_
+    Shows the use of `pyramid_persona` with a simple step-by-step demo.
+
+`Pyramid, Persona & Group-Level Auth`_
+    What to do after the basic login with persona is set up : how to hook in complex authorization.
+
+`Securing Pyramid with Persona and MACAuth`_
+    How to combine `pyramid_persona` with MACAuth to provide authentication for both humans and machines.
+
+.. _`Quick authentication on pyramid with persona`: http://compiletoi.net/quick-authentication-on-pyramid-with-persona.html
+.. _`Securing Pyramid with Persona and MACAuth`: https://www.rfk.id.au/blog/entry/securing-pyramid-persona-macauth/
+.. _`Pyramid, Persona & Group-Level Auth`: http://douglatornell.ca/blog/2012/10/27/pyramid-persona-group-level-auth/
 
 Contact
 -------
