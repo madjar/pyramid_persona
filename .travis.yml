@@ -3,5 +3,5 @@ python:
   - "2.6"
   - "2.7"
   - "3.2"
-install: "pip install -e . --use-mirrors"
+install: "pip install requests==0.14.1 -e . --use-mirrors"
 script: nosetests
