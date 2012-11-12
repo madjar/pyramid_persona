@@ -1,3 +1,8 @@
+dev
+---
+
+- Fixed a bug that would cause the login to fail when the loginn route was not at '/login'.
+
 1.1
 ---
 
