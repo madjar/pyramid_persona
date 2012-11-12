@@ -82,5 +82,5 @@ class ConfigTests(unittest.TestCase):
         from pyramid_persona.utils import js
         request = testing.DummyRequest()
         javascript = js(request)
-        self.assertIn('/awesomeloginpath', javascript)
-        self.assertIn('/awesomelogoutpath', javascript)
+        assert '/awesomeloginpath' in javascript
+        assert '/awesomelogoutpath' in javascript
