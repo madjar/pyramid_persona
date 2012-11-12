@@ -21,8 +21,8 @@ def js(request):
     user = markupsafe.Markup("'%s'")%userid if userid else "null"
     data = {
         'user': user,
-        'login': '/login',
-        'logout': '/logout',
+        'login': request.route_path(request.registry['persona.login_route']),
+        'logout': request.route_path(request.registry['persona.logout_route']),
         'csrf_token': request.session.get_csrf_token(),
         'request_params': markupsafe.Markup(request.registry['persona.request_params']),
     }

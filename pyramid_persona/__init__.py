@@ -71,11 +71,13 @@ def includeme(config):
 
     # Login and logout views.
     login_route = settings.get('persona.login_route', 'login')
+    config.registry['persona.login_route'] = login_route
     login_path = settings.get('persona.login_path', '/login')
     config.add_route(login_route, login_path)
     config.add_view(login, route_name=login_route)
 
     logout_route = settings.get('persona.logout_route', 'logout')
+    config.registry['persona.logout_route'] = logout_route
     logout_path = settings.get('persona.logout_path', '/logout')
     config.add_route(logout_route, logout_path)
     config.add_view(logout, route_name=logout_route)

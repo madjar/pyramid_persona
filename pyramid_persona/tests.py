@@ -67,3 +67,20 @@ class ViewTests(unittest.TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertTrue(self.security_policy.forgotten)
+
+
+class ConfigTests(unittest.TestCase):
+    def setUp(self):
+        self.config = testing.setUp()
+        self.config.add_settings({'persona.secret': 'testingsecret',
+                                  'persona.audiences': 'http://someaudience',
+                                  'persona.login_path': '/awesomeloginpath',
+                                  'persona.logout_path': '/awesomelogoutpath'})
+        self.config.include('pyramid_persona')
+
+    def test_login_path(self):
+        from pyramid_persona.utils import js
+        request = testing.DummyRequest()
+        javascript = js(request)
+        self.assertIn('/awesomeloginpath', javascript)
+        self.assertIn('/awesomelogoutpath', javascript)
