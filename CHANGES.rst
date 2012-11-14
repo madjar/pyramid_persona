@@ -1,7 +1,7 @@
-dev
+1.2
 ---
 
-- Fixed a bug that would cause the login to fail when the loginn route was not at '/login'.
+- Fixed a bug that would cause the login to fail when the login route was not at '/login'.
 
 1.1
 ---
