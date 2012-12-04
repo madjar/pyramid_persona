@@ -49,9 +49,10 @@ documentation, but might be useful.
 Contact
 -------
 
-This project is made by Georges Dubus (`@georgesdubus`_). Bug reports and pull requests are welcome.
+This project is made by Georges Dubus (`@georgesdubus`_). It is hosted on Github_. Bug reports and pull requests are welcome.
 
 .. _`@georgesdubus`: https://twitter.com/georgesdubus
+.. _Github: https://github.com/madjar/pyramid_persona
 
 
 Indices and tables

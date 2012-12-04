@@ -9,12 +9,13 @@ configuration as possible, while still letting you customize if you
 want. If you want to see some screenshots of the demo app, take a look
 at this `blog post`_.
 
-You can find it on pypi_ as `pyramid_persona`.
+You can find it on pypi_ as `pyramid_persona`. Also don't forget to check the documentation_.
 
 .. _persona: https://login.persona.org/
 .. _pyramid: http://www.pylonsproject.org/
 .. _pypi: http://pypi.python.org/pypi/pyramid_persona
 .. _`blog post`: http://compiletoi.net/quick-authentication-on-pyramid-with-persona.html
+.. _documentation: https://pyramid_persona.readthedocs.org/en/latest/
 
 Very basic usage
 ----------------
@@ -87,82 +88,6 @@ Here is, in details, what including `pyramid_persona` does :
 
 You can replace any part you like if the default behaviour doesn't
 work for you and the configuration isn't enough.
-
-Configuration
--------------
-
-You can override any policy or view defined by `pyramid_persona` by defining them the usual way.
-
-`pyramid_persona` defines the following settings :
-
-persona.secret
-    A secret string used to sign cookies. Required only if you do not defined another session factory.
-
-persona.audiences
-    The protocol, domain name, and port of your site, as defined in the `persona documentation`_. Can contain more than one value. Required.
-
-persona.verifier
-    The doted python name of the BrowserID assertion verifier. Optional. Default is 'browserid.RemoteVerifier'. Another possible value could be 'browserid.LocalVerifier' (not recommended for now).
-
-.. _`persona documentation`: https://developer.mozilla.org/en-US/docs/Persona/Remote_Verification_API
-
-Login dialog customization
-++++++++++++++++++++++++++
-
-Persona provides a few ways to customize the login dialog. To be precise, they
-are arguments to the `navigator.id.request` API call. For the full description of these parameters,
-see `the documentation of navigator.id.request`_.
-
-.. _the documentation of navigator.id.request: https://developer.mozilla.org/en-US/docs/DOM/navigator.id.request
-
-persona.siteName
-    Plain text name of your site to show in the login dialog. Optional.
-
-persona.siteLogo
-    Absolute path to an image to show in the login dialog. Optional.
-
-persona.privacyPolicy
-    Absolute path or URL to the web site's privacy policy. Optional.
-
-persona.termsOfService
-    Absolute path or URL to the web site's terms of service. Optional.
-
-Routes
-++++++
-
-If the default route names or paths conflicts with your application, you can change them :
-
-persona.login_route
-    The login route name. Optional, default is 'login'.
-
-persona.login_path
-    The login route path. Optional, default is '/login'.
-
-persona.logout_route
-    The logout route name. Optional, default is 'logout'.
-
-persona.logout_path
-    The logout route path. Optional, default is '/logout'.
-
-
-Resources
----------
-
-These blog posts contain information that is out of the scope of this
-documentation, but might be useful.
-
-`Quick authentication on pyramid with persona`_
-    Shows the use of `pyramid_persona` with a simple step-by-step demo.
-
-`Pyramid, Persona & Group-Level Auth`_
-    What to do after the basic login with persona is set up : how to hook in complex authorization.
-
-`Securing Pyramid with Persona and MACAuth`_
-    How to combine `pyramid_persona` with MACAuth to provide authentication for both humans and machines.
-
-.. _`Quick authentication on pyramid with persona`: http://compiletoi.net/quick-authentication-on-pyramid-with-persona.html
-.. _`Securing Pyramid with Persona and MACAuth`: https://www.rfk.id.au/blog/entry/securing-pyramid-persona-macauth/
-.. _`Pyramid, Persona & Group-Level Auth`: http://douglatornell.ca/blog/2012/10/27/pyramid-persona-group-level-auth/
 
 Contact
 -------
