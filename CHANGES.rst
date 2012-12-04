@@ -1,3 +1,8 @@
+DEV
+---
+
+- Switched to a AuthTktAuthenticationPolicy so that the login doesn't expire with the session.
+
 1.2
 ---
 

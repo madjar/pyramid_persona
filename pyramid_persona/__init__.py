@@ -1,6 +1,6 @@
 import json
 import warnings
-from pyramid.authentication import SessionAuthenticationPolicy
+from pyramid.authentication import AuthTktAuthenticationPolicy
 from pyramid.authorization import ACLAuthorizationPolicy
 from pyramid.config import ConfigurationError
 from pyramid.interfaces import ISessionFactory, PHASE2_CONFIG
@@ -38,12 +38,13 @@ def includeme(config):
     # Default authentication and authorization policies. Those are needed to remember the userid.
     authz_policy = ACLAuthorizationPolicy()
     config.set_authorization_policy(authz_policy)
-    authn_policy = SessionAuthenticationPolicy()
+    secret = settings.get('persona.secret', None)
+    authn_policy = AuthTktAuthenticationPolicy(secret, hashalg='sha512')
     config.set_authentication_policy(authn_policy)
 
     # A default session factory, needed for the csrf check.
 
-    secret = settings.get('persona.secret', None)
+
     session_factory = UnencryptedCookieSessionFactoryConfig(secret)
     config.set_session_factory(session_factory)
 
