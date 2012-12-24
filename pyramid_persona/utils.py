@@ -24,6 +24,7 @@ def js(request):
         'login': request.route_path(request.registry['persona.login_route']),
         'logout': request.route_path(request.registry['persona.logout_route']),
         'csrf_token': request.session.get_csrf_token(),
+        'came_from': request.url,
         'request_params': markupsafe.Markup(request.registry['persona.request_params']),
     }
     template = markupsafe.Markup(pkg_resources.resource_string('pyramid_persona', 'templates/persona.js').decode())

@@ -1,5 +1,5 @@
 import pkg_resources
-from pyramid.httpexceptions import HTTPBadRequest
+from pyramid.httpexceptions import HTTPBadRequest, HTTPFound
 from pyramid.response import Response
 from pyramid.security import remember, forget
 
@@ -23,14 +23,14 @@ def login(request):
     except (ValueError, browserid.errors.TrustError):
         raise HTTPBadRequest('invalid assertion')
     headers = remember(request, data['email'])
-    return Response(headers=headers)
+    return HTTPFound(request.POST['came_from'], headers=headers)
 
 
 def logout(request):
     """View to forget the user"""
     _check_csrf_token(request)
     headers = forget(request)
-    return Response(headers=headers)
+    return HTTPFound(request.POST['came_from'], headers=headers)
 
 
 def forbidden(request):

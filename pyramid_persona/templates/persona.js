@@ -8,22 +8,33 @@ $(function() {
     navigator.id.watch({
         loggedInUser: currentUser,
         onlogin: function(assertion) {
-            $.ajax({
-                type: 'POST',
-                url: '%(login)s',
-                data: {assertion: assertion, csrf_token: "%(csrf_token)s"},
-                success: function(res, status, xhr) { window.location.reload(); },
-                error: function(res, status, xhr) { alert("login failure" + status); }
-            });
+            if (assertion) {
+                var $form = $("<form method=POST "+
+                    "      action='%(login)s'>" +
+                    "  <input type='hidden' " +
+                    "         name='assertion' " +
+                    "         value='" + assertion + "' />" +
+                    "  <input type='hidden' " +
+                    "         name='came_from' "+
+                    "         value='%(came_from)s' />" +
+                    "  <input type='hidden' " +
+                    "         name='csrf_token' "+
+                    "         value='%(csrf_token)s' />" +
+                    "</form>").appendTo($("body"));
+                $form.submit();
+            }
         },
         onlogout: function() {
-            $.ajax({
-                type: 'POST',
-                url: '%(logout)s',
-                data: {csrf_token: "%(csrf_token)s"},
-                success: function(res, status, xhr) { window.location.reload(); },
-                error: function(res, status, xhr) { alert("logout failure" + status); }
-            });
+            var $form = $("<form method=POST "+
+                "      action='%(logout)s'>" +
+                "  <input type='hidden' " +
+                "         name='came_from' "+
+                "         value='%(came_from)s' />" +
+                "  <input type='hidden' " +
+                "         name='csrf_token' "+
+                "         value='%(csrf_token)s' />" +
+                "</form>").appendTo($("body"));
+            $form.submit();
         }
     });
 });
