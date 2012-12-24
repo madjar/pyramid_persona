@@ -7,7 +7,7 @@ README = open(os.path.join(here, 'README.rst')).read()
 CHANGES = open(os.path.join(here, 'CHANGES.rst')).read()
 
 requires = [
-    'pyramid',
+    'pyramid>=1.4',
     'PyBrowserID',
     ]
 

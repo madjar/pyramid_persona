@@ -12,7 +12,7 @@ checks before logging them.
 The easier way to do see is by overriding the login view. The default view is
 defined like this::
 
-    @view_config(route_name='login')
+    @view_config(route_name='login', check_csrf=True)
     def login(request):
         email = verify_login(request)
         headers = remember(request, email)
@@ -25,7 +25,7 @@ which the button was clicked ; by default we redirect the user back there after 
 So, if you want to check that an email is on a whitelist and create a profile and
 redirect new users, you can define a new login view like this one::
 
-    @view_config(route_name='login')
+    @view_config(route_name='login', check_csrf=True)
     def login(request):
         email = verify_login('email')
         if email not in whitelist:
@@ -39,9 +39,8 @@ redirect new users, you can define a new login view like this one::
 
 Some goes if you want to do extra stuff at logout. The default logout view looks like this::
 
-    @view_config(route_name='logout')
+    @view_config(route_name='logout', check_csrf=True)
     def logout(request):
-        check_csrf_token(request)
         headers = forget(request)
         return HTTPFound(request.POST['came_from'], headers=headers)
 

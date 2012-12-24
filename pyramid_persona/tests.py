@@ -1,22 +1,8 @@
 import unittest
-from pyramid.interfaces import IAuthorizationPolicy, IAuthenticationPolicy
-from pyramid.testing import DummySecurityPolicy
 from pyramid.httpexceptions import HTTPBadRequest
 import requests
 
 from pyramid import testing
-
-
-class SecurityPolicy(DummySecurityPolicy):
-    remembered = None
-    forgotten = None
-    def remember(self, request, principal, **kw):
-        self.remembered = principal
-        return []
-
-    def forget(self, request):
-        self.forgotten = True
-        return []
 
 
 class ViewTests(unittest.TestCase):
@@ -24,7 +10,7 @@ class ViewTests(unittest.TestCase):
         self.config = testing.setUp(autocommit=False)
         self.config.add_settings({'persona.audiences': 'http://someaudience'})
         self.config.include('pyramid_persona')
-        self.security_policy = SecurityPolicy()
+        self.security_policy = self.config.testing_securitypolicy()
         self.config.set_authorization_policy(self.security_policy)
         self.config.set_authentication_policy(self.security_policy)
         self.config.commit()
@@ -59,7 +45,7 @@ class ViewTests(unittest.TestCase):
         request.params['came_from'] = '/'
 
         self.assertRaises(HTTPBadRequest, login, request)
-        self.assertEqual(self.security_policy.remembered, None)
+        self.assertFalse(hasattr(self.security_policy, 'remembered'))
 
     def test_logout(self):
         from .views import logout

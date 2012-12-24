@@ -2,16 +2,7 @@ import pkg_resources
 from pyramid.httpexceptions import HTTPBadRequest, HTTPFound
 from pyramid.response import Response
 from pyramid.security import remember, forget
-
 import browserid.errors
-
-
-def _check_csrf_token(request):
-    """Check the CSRF token from the request. Raises if invalid.
-
-    Copied from pyramid.session.check_csrf_token in pyramid==1.4a2."""
-    if request.params.get('csrf_token') != request.session.get_csrf_token():
-        raise HTTPBadRequest('incorrect CSRF token')
 
 
 def verify_login(request):
@@ -19,7 +10,6 @@ def verify_login(request):
 
     Returns the email of the user if everything is valid, otherwise raises
     a HTTPBadRequest"""
-    _check_csrf_token(request)
     verifier = request.registry['persona.verifier']
     try:
         data = verifier.verify(request.POST['assertion'])
@@ -37,7 +27,6 @@ def login(request):
 
 def logout(request):
     """View to forget the user"""
-    _check_csrf_token(request)
     headers = forget(request)
     return HTTPFound(request.POST['came_from'], headers=headers)
 
