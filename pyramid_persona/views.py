@@ -14,15 +14,24 @@ def _check_csrf_token(request):
         raise HTTPBadRequest('incorrect CSRF token')
 
 
-def login(request):
-    """View to check the persona assertion and remember the user"""
+def verify_login(request):
+    """Verifies the assertion and the csrf token in the given request.
+
+    Returns the email of the user if everything is valid, otherwise raises
+    a HTTPBadRequest"""
     _check_csrf_token(request)
     verifier = request.registry['persona.verifier']
     try:
         data = verifier.verify(request.POST['assertion'])
     except (ValueError, browserid.errors.TrustError):
         raise HTTPBadRequest('invalid assertion')
-    headers = remember(request, data['email'])
+    return data['email']
+
+
+def login(request):
+    """View to check the persona assertion and remember the user"""
+    email = verify_login(request)
+    headers = remember(request, email)
     return HTTPFound(request.POST['came_from'], headers=headers)
 
 

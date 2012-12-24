@@ -1,6 +1,8 @@
 DEV
 ---
 
+- Added documentation on how to do extra work at login, and made the internal changes for it to work.
+- Added some real docs
 - Switched to a AuthTktAuthenticationPolicy so that the login doesn't expire with the session.
 
 1.2
