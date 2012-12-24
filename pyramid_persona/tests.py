@@ -34,27 +34,29 @@ class ViewTests(unittest.TestCase):
 
     def test_login(self):
         from .views import login
-        data = requests.get('http://personatestuser.org/email_with_assertion/http%3A%2F%2Fsomeaudience').json
+        data = requests.get('http://personatestuser.org/email_with_assertion/http%3A%2F%2Fsomeaudience').json()
         email = data['email']
         assertion = data['assertion']
 
         request = testing.DummyRequest()
         request.params['assertion'] = assertion
         request.params['csrf_token'] = request.session.get_csrf_token()
+        request.params['came_from'] = '/'
         response = login(request)
 
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 302)
         self.assertEqual(self.security_policy.remembered, email)
 
     def test_login_fails_with_bad_audience(self):
         from .views import login
-        data = requests.get('http://personatestuser.org/email_with_assertion/http%3A%2F%2Fbadaudience').json
+        data = requests.get('http://personatestuser.org/email_with_assertion/http%3A%2F%2Fbadaudience').json()
         email = data['email']
         assertion = data['assertion']
 
         request = testing.DummyRequest()
         request.params['assertion'] = assertion
         request.params['csrf_token'] = request.session.get_csrf_token()
+        request.params['came_from'] = '/'
 
         self.assertRaises(HTTPBadRequest, login, request)
         self.assertEqual(self.security_policy.remembered, None)
@@ -63,9 +65,10 @@ class ViewTests(unittest.TestCase):
         from .views import logout
         request = testing.DummyRequest()
         request.params['csrf_token'] = request.session.get_csrf_token()
+        request.params['came_from'] = '/'
         response = logout(request)
 
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 302)
         self.assertTrue(self.security_policy.forgotten)
 
 
