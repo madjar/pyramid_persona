@@ -6,6 +6,7 @@ To run it, you'll need pyramid, pyramid_persona and waitress.
 The button integration example is a /.
 The forbidden view example is at /restricted.
 """
+import logging
 
 from waitress import serve
 from pyramid.config import Configurator
@@ -33,6 +34,7 @@ if __name__ == '__main__':
         'persona.privacyPolicy': '/nonExistentPrivacy.html',
         'persona.termsOfService': '/nonExistentTos.html',
     }
+    logging.basicConfig(level=logging.DEBUG)
     config = Configurator(settings=settings)
     config.include('pyramid_persona')
     config.add_route('restricted', '/restricted')

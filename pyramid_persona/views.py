@@ -1,8 +1,12 @@
+import logging
 import pkg_resources
 from pyramid.httpexceptions import HTTPBadRequest, HTTPFound
 from pyramid.response import Response
 from pyramid.security import remember, forget
 import browserid.errors
+
+
+logger = logging.getLogger(__name__)
 
 
 def verify_login(request):
@@ -13,8 +17,9 @@ def verify_login(request):
     verifier = request.registry['persona.verifier']
     try:
         data = verifier.verify(request.POST['assertion'])
-    except (ValueError, browserid.errors.TrustError):
-        raise HTTPBadRequest('invalid assertion')
+    except (ValueError, browserid.errors.TrustError) as e:
+        logger.info('Failed persona login: %s (%s)', e, type(e).__name__)
+        raise HTTPBadRequest('Invalid assertion')
     return data['email']
 
 
