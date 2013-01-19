@@ -9,10 +9,11 @@ CHANGES = open(os.path.join(here, 'CHANGES.rst')).read()
 requires = [
     'pyramid>=1.4',
     'PyBrowserID',
+    'requests>=1.0',
     ]
 
 setup(name='pyramid_persona',
-      version='1.2',
+      version='1.3',
       description='pyramid_persona',
       long_description=README + '\n\n' +  CHANGES,
       classifiers=[

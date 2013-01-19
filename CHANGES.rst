@@ -1,9 +1,10 @@
-DEV
+1.3
 ---
 
-- Added logging in case of failed login.
-- Added documentation on how to do extra work at login, and made the internal changes for it to work.
+- Depends on pyramid 1.4
 - Added some real docs
+- Added documentation on how to do extra work at login, and made the internal changes for it to work.
+- Added logging in case of failed login.
 - Switched to a AuthTktAuthenticationPolicy so that the login doesn't expire with the session.
 
 1.2
