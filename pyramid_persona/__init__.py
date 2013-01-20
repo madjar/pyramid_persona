@@ -4,6 +4,7 @@ from pyramid.authentication import AuthTktAuthenticationPolicy
 from pyramid.authorization import ACLAuthorizationPolicy
 from pyramid.config import ConfigurationError
 from pyramid.interfaces import ISessionFactory, PHASE2_CONFIG
+from pyramid.security import NO_PERMISSION_REQUIRED
 from pyramid.session import UnencryptedCookieSessionFactoryConfig
 from pyramid.settings import aslist
 from pyramid_persona.utils import button, js
@@ -75,13 +76,15 @@ def includeme(config):
     config.registry['persona.login_route'] = login_route
     login_path = settings.get('persona.login_path', '/login')
     config.add_route(login_route, login_path)
-    config.add_view(login, route_name=login_route, check_csrf=True)
+    config.add_view(login, route_name=login_route, check_csrf=True,
+                    permission=NO_PERMISSION_REQUIRED)
 
     logout_route = settings.get('persona.logout_route', 'logout')
     config.registry['persona.logout_route'] = logout_route
     logout_path = settings.get('persona.logout_path', '/logout')
     config.add_route(logout_route, logout_path)
-    config.add_view(logout, route_name=logout_route, check_csrf=True)
+    config.add_view(logout, route_name=logout_route, check_csrf=True,
+                    permission=NO_PERMISSION_REQUIRED)
 
     # A simple 403 view, with a login button.
     config.add_forbidden_view(forbidden)
