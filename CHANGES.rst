@@ -1,3 +1,8 @@
+1.3.1
+-----
+
+- Made all views not required any permission even if a default permission is set.
+
 1.3
 ---
 
