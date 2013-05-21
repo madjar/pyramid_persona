@@ -77,6 +77,7 @@ def includeme(config):
     login_path = settings.get('persona.login_path', '/login')
     config.add_route(login_route, login_path)
     config.add_view(login, route_name=login_route, check_csrf=True,
+                    renderer='json',
                     permission=NO_PERMISSION_REQUIRED)
 
     logout_route = settings.get('persona.logout_route', 'logout')
@@ -84,6 +85,7 @@ def includeme(config):
     logout_path = settings.get('persona.logout_path', '/logout')
     config.add_route(logout_route, logout_path)
     config.add_view(logout, route_name=logout_route, check_csrf=True,
+                    renderer='json',
                     permission=NO_PERMISSION_REQUIRED)
 
     # A simple 403 view, with a login button.

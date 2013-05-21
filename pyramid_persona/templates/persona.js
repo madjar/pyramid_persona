@@ -8,33 +8,34 @@ $(function() {
     navigator.id.watch({
         loggedInUser: currentUser,
         onlogin: function(assertion) {
-            if (assertion) {
-                var $form = $("<form method=POST "+
-                    "      action='%(login)s'>" +
-                    "  <input type='hidden' " +
-                    "         name='assertion' " +
-                    "         value='" + assertion + "' />" +
-                    "  <input type='hidden' " +
-                    "         name='came_from' "+
-                    "         value='%(came_from)s' />" +
-                    "  <input type='hidden' " +
-                    "         name='csrf_token' "+
-                    "         value='%(csrf_token)s' />" +
-                    "</form>").appendTo($("body"));
-                $form.submit();
-            }
-        },
-        onlogout: function() {
-            var $form = $("<form method=POST "+
-                "      action='%(logout)s'>" +
-                "  <input type='hidden' " +
-                "         name='came_from' "+
-                "         value='%(came_from)s' />" +
-                "  <input type='hidden' " +
-                "         name='csrf_token' "+
-                "         value='%(csrf_token)s' />" +
-                "</form>").appendTo($("body"));
-            $form.submit();
+	    $.ajax({
+		type: 'POST',
+		url: '%(login)s',
+		data: {
+		    assertion: assertion,
+		    came_from: '%(came_from)s',
+		    csrf_token: '%(csrf_token)s'
+		},
+		dataType: 'json',
+		success: function(res, status, xhr) { window.location = res['redirect']; },
+		error: function(xhr, status, err) {
+		    navigator.id.logout();
+		    alert("Login failure: " + err);
+		}
+            });
+	},
+	onlogout: function() {
+	    $.ajax({
+		type: 'POST',
+		url: '%(logout)s',
+		data:{
+		    came_from: '%(came_from)s',
+		    csrf_token: '%(csrf_token)s'
+		},
+		dataType: 'json',
+		success: function(res, status, xhr) { window.location = res['redirect']; },
+		error: function(xhr, status, err) { alert("Logout failure: " + err); }
+	    });
         }
     });
 });

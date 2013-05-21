@@ -6,7 +6,7 @@
 </head>
 <body>
 <h1>Persona test page</h1>
-Hello ${user}
+${message} ${user}
 ${request.persona_button}
 </body>
 </html>

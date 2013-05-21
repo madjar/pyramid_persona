@@ -30,7 +30,7 @@ class ViewTests(unittest.TestCase):
         request.params['came_from'] = '/'
         response = login(request)
 
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response, {'redirect': '/'})
         self.assertEqual(self.security_policy.remembered, email)
 
     def test_login_fails_with_bad_audience(self):
@@ -54,7 +54,7 @@ class ViewTests(unittest.TestCase):
         request.params['came_from'] = '/'
         response = logout(request)
 
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response, {'redirect': '/'})
         self.assertTrue(self.security_policy.forgotten)
 
 

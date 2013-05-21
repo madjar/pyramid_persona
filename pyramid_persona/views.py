@@ -26,14 +26,14 @@ def verify_login(request):
 def login(request):
     """View to check the persona assertion and remember the user"""
     email = verify_login(request)
-    headers = remember(request, email)
-    return HTTPFound(request.POST['came_from'], headers=headers)
+    request.response.headers = remember(request, email)
+    return {'redirect': request.POST['came_from']}
 
 
 def logout(request):
     """View to forget the user"""
-    headers = forget(request)
-    return HTTPFound(request.POST['came_from'], headers=headers)
+    request.response.headers = forget(request)
+    return {'redirect': request.POST['came_from']}
 
 
 def forbidden(request):

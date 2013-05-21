@@ -6,13 +6,18 @@ To run it, you'll need pyramid, pyramid_persona and waitress.
 The button integration example is a /.
 The forbidden view example is at /restricted.
 """
+from __future__ import print_function
 import logging
 
 from waitress import serve
+from pyramid.view import view_config
+from pyramid.httpexceptions import HTTPFound
 from pyramid.config import Configurator
 from pyramid.response import Response
-from pyramid.security import authenticated_userid
+from pyramid.security import authenticated_userid, remember
 from pyramid.exceptions import Forbidden
+from pyramid_persona.views import verify_login
+
 
 def restricted(request):
     userid = authenticated_userid(request)
@@ -20,9 +25,30 @@ def restricted(request):
         raise Forbidden()
     return Response('Hello %s!' % (userid,))
 
+
 def template(request):
     userid = authenticated_userid(request)
-    return {'user': userid}
+    return {'message': 'Hello', 'user': userid}
+
+
+def first_time(request):
+    userid = authenticated_userid(request)
+    return {'message': 'Welcome', 'user': userid}
+
+
+KNOWN = set()
+
+
+@view_config(route_name='login', check_csrf=True, renderer='json')
+def login(request):
+    email = verify_login(request)
+    request.response.headers = remember(request, email)
+    if email not in KNOWN:
+        KNOWN.add(email)
+        print(email, 'just logged in for the first time')
+        return {'redirect': '/welcome'}
+    else:
+        return {'redirect': request.POST['came_from']}
 
 
 if __name__ == '__main__':
@@ -39,7 +65,10 @@ if __name__ == '__main__':
     config.include('pyramid_persona')
     config.add_route('restricted', '/restricted')
     config.add_view(restricted, route_name='restricted')
-    config.add_route('template', '/')
-    config.add_view(template, route_name='template', renderer='hello.mako')
+    config.add_route('root', '/')
+    config.add_view(template, route_name='root', renderer='hello.mako')
+    config.add_route('first_time', '/welcome')
+    config.add_view(first_time, route_name='first_time', renderer='hello.mako')
+    config.scan('.')
     app = config.make_wsgi_app()
     serve(app, host='0.0.0.0')
