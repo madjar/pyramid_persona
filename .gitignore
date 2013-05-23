@@ -4,3 +4,4 @@ pyramid_persona.egg-info/
 build/
 dist/
 _build
+/.tox/
