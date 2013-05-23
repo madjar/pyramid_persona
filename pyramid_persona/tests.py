@@ -73,3 +73,44 @@ class ConfigTests(unittest.TestCase):
         javascript = js(request)
         assert '/awesomeloginpath' in javascript
         assert '/awesomelogoutpath' in javascript
+
+
+class RenderingTests(unittest.TestCase):
+    """There was a bug in the rendering with python3. This tests it."""
+    def setUp(self):
+        self.config = testing.setUp()
+        self.config.add_settings(settings={'persona.secret': 'testingsecret',
+                                           'persona.audiences': 'http://someaudience'})
+        self.config.include('pyramid_persona')
+
+    def test_login(self):
+        from pyramid_persona.views import login
+        data = requests.get('http://personatestuser.org/email_with_assertion/http%3A%2F%2Fsomeaudience').json()
+        assertion = data['assertion']
+
+        request = testing.DummyRequest()
+        request.environ['HTTP_HOST'] = 'http://someaudience'
+        request.params['assertion'] = assertion
+        request.params['csrf_token'] = request.session.get_csrf_token()
+        request.params['came_from'] = '/'
+        result = login(request)
+
+        from pyramid.renderers import render_to_response
+        response = render_to_response('json', result, request=request)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.text, '{"redirect": "/"}')
+
+    def test_logout(self):
+        from .views import logout
+        request = testing.DummyRequest()
+        request.environ['HTTP_HOST'] = 'http://someaudience'
+        request.params['csrf_token'] = request.session.get_csrf_token()
+        request.params['came_from'] = '/'
+        result = logout(request)
+
+        from pyramid.renderers import render_to_response
+        response = render_to_response('json', result, request=request)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.text, '{"redirect": "/"}')

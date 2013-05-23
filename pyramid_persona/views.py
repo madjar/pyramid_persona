@@ -26,13 +26,15 @@ def verify_login(request):
 def login(request):
     """View to check the persona assertion and remember the user"""
     email = verify_login(request)
-    request.response.headers = remember(request, email)
+    print(request.response.headers)
+    print(remember(request, email))
+    request.response.headers.extend(remember(request, email))
     return {'redirect': request.POST['came_from']}
 
 
 def logout(request):
     """View to forget the user"""
-    request.response.headers = forget(request)
+    request.response.headers.extend(forget(request))
     return {'redirect': request.POST['came_from']}
 
 

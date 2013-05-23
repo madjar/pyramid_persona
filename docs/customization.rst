@@ -16,8 +16,8 @@ defined like this::
     def login(request):
         # Verify the assertion and get the email of the user
         email = verify_login(request)
-        # Set the headers of the response to remember the user
-        request.response.headers = remember(request, email)
+        # Add the headers required to remember the user to the response
+        request.response.headers.extend(remember(request, email))
         # Return a json message containing the address or path to redirect to.
         return {'redirect': request.POST['came_from']}
 
@@ -34,7 +34,7 @@ redirect new users, you can define a new login view like this one::
         if email not in whitelist:
             request.session.flash('Sorry, you are not on the list')
             return {'redirect': '/'}
-	request.response.headers = remember(request, email)
+	request.response.headers.extend(emember(request, email))
         if not exists_in_db(email):
             create_profile(email)
             return {'redirect': '/new-user'}
@@ -44,7 +44,7 @@ Some goes if you want to do extra stuff at logout. The default logout view looks
 
     @view_config(route_name='logout', check_csrf=True, renderer='json')
     def logout(request):
-        request.response.headers = forget(request)
+        request.response.headers.extend(forget(request))
         return {'redirect': request.POST['came_from']}
 
 What pyramid_persona does
