@@ -13,7 +13,7 @@ requires = [
     ]
 
 setup(name='pyramid_persona',
-      version='1.3.1',
+      version='1.4',
       description='pyramid_persona',
       long_description=README + '\n\n' +  CHANGES,
       classifiers=[

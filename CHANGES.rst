@@ -1,3 +1,8 @@
+1.4
+---
+
+- Changed the login views and the javascript code to implemente mozilla recommended practices. `logout` is now called after an error in the login view, and the format of the login view has changed.
+
 1.3.1
 -----
 
