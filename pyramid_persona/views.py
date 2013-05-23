@@ -26,8 +26,6 @@ def verify_login(request):
 def login(request):
     """View to check the persona assertion and remember the user"""
     email = verify_login(request)
-    print(request.response.headers)
-    print(remember(request, email))
     request.response.headers.extend(remember(request, email))
     return {'redirect': request.POST['came_from']}
 
