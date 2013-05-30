@@ -42,13 +42,16 @@ KNOWN = set()
 @view_config(route_name='login', check_csrf=True, renderer='json')
 def login(request):
     email = verify_login(request)
+    if email == 'denied@mockmyid.com':
+        return {'redirect': request.POST['came_from'], 'success': False}
+
     request.response.headers = remember(request, email)
     if email not in KNOWN:
         KNOWN.add(email)
         print(email, 'just logged in for the first time')
-        return {'redirect': '/welcome'}
+        return {'redirect': '/welcome', 'success': True}
     else:
-        return {'redirect': request.POST['came_from']}
+        return {'redirect': request.POST['came_from'], 'success': True}
 
 
 if __name__ == '__main__':

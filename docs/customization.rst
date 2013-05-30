@@ -19,11 +19,16 @@ defined like this::
         # Add the headers required to remember the user to the response
         request.response.headers.extend(remember(request, email))
         # Return a json message containing the address or path to redirect to.
-        return {'redirect': request.POST['came_from']}
+        return {'redirect': request.POST['came_from'], 'success': True}
 
 To be precise, the route name is the option 'pyramid.route_name', and
-verify_login is :py:func:`pyramid_persona.views.verify_login`. `request.POST['came_from']` is the url of the page on
-which the button was clicked ; by default we redirect the user back there after the login.
+verify_login is
+:py:func:`pyramid_persona.views.verify_login`. `request.POST['came_from']`
+is the url of the page on which the button was clicked ; by default we
+redirect the user back there after the login. The `success` value in
+the response tells the javascript side whether the login was
+successful: it is needed to make sure the user stays logged-out for
+Persona.
 
 So, if you want to check that an email is on a whitelist, create a profile and
 redirect new users, you can define a new login view like this one::
@@ -33,14 +38,14 @@ redirect new users, you can define a new login view like this one::
         email = verify_login('email')
         if email not in whitelist:
             request.session.flash('Sorry, you are not on the list')
-            return {'redirect': '/'}
-	request.response.headers.extend(emember(request, email))
+            return {'redirect': '/', 'success': False}
+	request.response.headers.extend(remember(request, email))
         if not exists_in_db(email):
             create_profile(email)
-            return {'redirect': '/new-user'}
-        return {'redirect': '/welcome-again'}
+            return {'redirect': '/new-user', 'success': True}
+        return {'redirect': '/welcome-again', 'success': True}
 
-Some goes if you want to do extra stuff at logout. The default logout view looks like this::
+Same goes if you want to do extra stuff at logout. The default logout view looks like this::
 
     @view_config(route_name='logout', check_csrf=True, renderer='json')
     def logout(request):

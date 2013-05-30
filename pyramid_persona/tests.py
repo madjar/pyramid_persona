@@ -30,7 +30,7 @@ class ViewTests(unittest.TestCase):
         request.params['came_from'] = '/'
         response = login(request)
 
-        self.assertEqual(response, {'redirect': '/'})
+        self.assertEqual(response, {'redirect': '/', 'success': True})
         self.assertEqual(self.security_policy.remembered, email)
 
     def test_login_fails_with_bad_audience(self):
@@ -99,7 +99,7 @@ class RenderingTests(unittest.TestCase):
         response = render_to_response('json', result, request=request)
 
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.text, '{"redirect": "/"}')
+        self.assertEqual(response.text, '{"redirect": "/", "success": true}')
 
     def test_logout(self):
         from .views import logout
