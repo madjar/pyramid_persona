@@ -37,6 +37,9 @@ persona.privacyPolicy
 persona.termsOfService
     Absolute path or URL to the web site's terms of service. Optional.
 
+persona.backgroundColor
+    A hexadecimal color to use as the login dialog's background. Format: "#rgb" or "#rrggbb". Optional.
+
 Routes
 ++++++
 

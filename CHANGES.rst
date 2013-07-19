@@ -2,6 +2,7 @@ DEV
 ---
 
 - Added `success` to the login view response, to state whether the login attempt was successful, and whether the user should be considered as logged-in.
+- Added support for the new backgroundColor option, to change the color of the login dialog.
 
 1.4
 ---

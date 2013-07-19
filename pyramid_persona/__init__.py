@@ -65,7 +65,7 @@ def includeme(config):
 
     # Parameters for the request API call
     request_params = {}
-    for option in ('privacyPolicy', 'siteLogo', 'siteName', 'termsOfService'):
+    for option in ('privacyPolicy', 'siteLogo', 'siteName', 'termsOfService', 'backgroundColor'):
         setting_name = 'persona.%s'%option
         if setting_name in settings:
             request_params[option] = settings[setting_name]
