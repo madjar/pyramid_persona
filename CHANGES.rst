@@ -1,4 +1,4 @@
-DEV
+1.5
 ---
 
 - Added `success` to the login view response, to state whether the login attempt was successful, and whether the user should be considered as logged-in.
