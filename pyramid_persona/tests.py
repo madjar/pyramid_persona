@@ -98,8 +98,10 @@ class RenderingTests(unittest.TestCase):
         from pyramid.renderers import render_to_response
         response = render_to_response('json', result, request=request)
 
+        import json
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.text, '{"redirect": "/", "success": true}')
+        self.assertEqual(json.loads(response.text),
+                         {"redirect": "/", "success": True})
 
     def test_logout(self):
         from .views import logout
