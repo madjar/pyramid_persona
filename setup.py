@@ -10,6 +10,7 @@ requires = [
     'pyramid>=1.4',
     'PyBrowserID',
     'requests>=1.0',
+    'MarkupSafe',
     ]
 
 setup(name='pyramid_persona',
