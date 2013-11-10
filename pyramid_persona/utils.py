@@ -19,12 +19,15 @@ def js(request):
     """Returns the javascript needed to run persona"""
     userid = authenticated_userid(request)
     user = markupsafe.Markup("'%s'")%userid if userid else "null"
+    redirect_paramater = request.registry['persona.redirect_url_parameter']
+    came_from = '%s%s' % (request.host_url,
+                          request.GET.get(redirect_paramater, request.path_qs))
     data = {
         'user': user,
         'login': request.route_path(request.registry['persona.login_route']),
         'logout': request.route_path(request.registry['persona.logout_route']),
         'csrf_token': request.session.get_csrf_token(),
-        'came_from': request.url,
+        'came_from': came_from,
         'request_params': markupsafe.Markup(request.registry['persona.request_params']),
     }
     template = markupsafe.Markup(pkg_resources.resource_string('pyramid_persona', 'templates/persona.js').decode())

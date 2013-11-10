@@ -96,3 +96,5 @@ def includeme(config):
 
     # The javascript needed by persona
     config.add_request_method(js, 'persona_js', reify=True)
+
+    config.registry['persona.redirect_url_parameter'] = settings.get('persona.redirect_url_parameter', 'came_from')
