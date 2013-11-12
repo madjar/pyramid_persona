@@ -39,7 +39,7 @@ redirect new users, you can define a new login view like this one::
         if email not in whitelist:
             request.session.flash('Sorry, you are not on the list')
             return {'redirect': '/', 'success': False}
-	request.response.headers.extend(remember(request, email))
+    request.response.headers.extend(remember(request, email))
         if not exists_in_db(email):
             create_profile(email)
             return {'redirect': '/new-user', 'success': True}
@@ -51,6 +51,56 @@ Same goes if you want to do extra stuff at logout. The default logout view looks
     def logout(request):
         request.response.headers.extend(forget(request))
         return {'redirect': request.POST['came_from']}
+
+
+Override the default forbidden view
+===================================
+
+`pyramid_persona` provides a default view for rendering the 403 forbidden
+response to non-authenticated users but you can override this view if you wish
+with pyramid's `forbidden_view_config` decorator.
+
+If you simply want to use a different template of your own design::
+
+    from pyramid.renderers import render_to_response
+
+    @forbidden_view_config()
+    def forbidden(request):
+        response = render_to_response('templates/403.pt',
+                                     {'js': request.persona_js, 'button': request.persona_button},
+                                     request=request)
+        response.status_int = 403
+        return response
+
+
+You could also override the forbidden view to change the behaviour depending
+on whether or not a user is authenticated. In this example authenticated users
+are shown the permission denied view while non-authenticated users are
+redirected to the login page::
+
+    @forbidden_view_config(renderer='403.jinja2')
+    def forbidden(request):
+        if authenticated_userid(request):
+            request.response.status = 403
+            return {}
+        url = request.route_url('login_form_view',
+                                _query={request.registry['persona.redirect_url_parameter']: request.path})
+        return HTTPSeeOther(url)
+
+
+Note that `pyramid_persona` doesn't provide a login view that responds to GET
+requests and so for the above to work would require you to create and register
+an appropriate login view that renders the GET version of the login page.
+
+In order to enable the user to return to the page they were attempting to view
+once they have successfully authenticated `pyramid_persona` adds a parameter
+to the querystring indicate where to redirect to. This value defaults to
+`came_from` and so the in the above example the non-authenticated user would
+be redirected to /login?came_from=<name of page attempted to view> (assuming
+of course that the user has add a login page at /login). The name of the
+parameter used in the querystring is configurable via the
+`persona.redirect_url_parameter` setting.
+
 
 What pyramid_persona does
 =========================

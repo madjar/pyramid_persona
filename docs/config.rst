@@ -14,6 +14,10 @@ persona.audiences
 persona.verifier
     The doted python name of the BrowserID assertion verifier. Optional. Default is 'browserid.RemoteVerifier'. Another possible value could be 'browserid.LocalVerifier' (not recommended for now).
 
+persona.redirect_url_parameter
+    The name of a querystring parameter which can be use to determine the url
+    to redirect to after successful login e.g. example.com/login?came_from=/edit would redirect to example.com/edit. Optional, default is `came_from`.
+
 .. _`persona documentation`: https://developer.mozilla.org/en-US/docs/Persona/Remote_Verification_API
 
 Login dialog customization
