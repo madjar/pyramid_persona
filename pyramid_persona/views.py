@@ -27,13 +27,13 @@ def login(request):
     """View to check the persona assertion and remember the user"""
     email = verify_login(request)
     request.response.headers.extend(remember(request, email))
-    return {'redirect': request.POST['came_from'], 'success': True}
+    return {'redirect': request.POST.get('came_from', '/'), 'success': True}
 
 
 def logout(request):
     """View to forget the user"""
     request.response.headers.extend(forget(request))
-    return {'redirect': request.POST['came_from']}
+    return {'redirect': request.POST.get('came_from', '/')}
 
 
 def forbidden(request):

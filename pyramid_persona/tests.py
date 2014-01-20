@@ -33,6 +33,24 @@ class ViewTests(unittest.TestCase):
         self.assertEqual(response, {'redirect': '/', 'success': True})
         self.assertEqual(self.security_policy.remembered, email)
 
+    def test_came_from_parameter_is_optional(self):
+        from .views import login, logout
+        data = requests.get('http://personatestuser.org/email_with_assertion/http%3A%2F%2Fsomeaudience').json()
+        email = data['email']
+        assertion = data['assertion']
+
+        request = testing.DummyRequest()
+        request.params['assertion'] = assertion
+        request.params['csrf_token'] = request.session.get_csrf_token()
+
+        response = login(request)
+        self.assertEqual(response, {'redirect': '/', 'success': True})
+        self.assertEqual(self.security_policy.remembered, email)
+
+        response = logout(request)
+        self.assertEqual(response, {'redirect': '/'})
+        self.assertTrue(self.security_policy.forgotten)
+
     def test_login_fails_with_bad_audience(self):
         from .views import login
         data = requests.get('http://personatestuser.org/email_with_assertion/http%3A%2F%2Fbadaudience').json()
