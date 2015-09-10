@@ -39,7 +39,7 @@ def includeme(config):
     # Default authentication and authorization policies. Those are needed to remember the userid.
     authz_policy = ACLAuthorizationPolicy()
     config.set_authorization_policy(authz_policy)
-    secret = settings.get('persona.secret', None)
+    secret = settings.get('persona.secret', '')
     authn_policy = AuthTktAuthenticationPolicy(secret, hashalg='sha512')
     config.set_authentication_policy(authn_policy)
 
