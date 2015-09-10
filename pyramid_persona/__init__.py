@@ -5,7 +5,7 @@ from pyramid.authorization import ACLAuthorizationPolicy
 from pyramid.config import ConfigurationError
 from pyramid.interfaces import ISessionFactory, PHASE2_CONFIG
 from pyramid.security import NO_PERMISSION_REQUIRED
-from pyramid.session import UnencryptedCookieSessionFactoryConfig
+from pyramid.session import SignedCookieSessionFactory
 from pyramid.settings import aslist
 from pyramid_persona.utils import button, js
 from pyramid_persona.views import login, logout, forbidden
@@ -46,7 +46,7 @@ def includeme(config):
     # A default session factory, needed for the csrf check.
 
 
-    session_factory = UnencryptedCookieSessionFactoryConfig(secret)
+    session_factory = SignedCookieSessionFactory(secret)
     config.set_session_factory(session_factory)
 
     # Either a secret must be provided or the session factory must be overriden.
