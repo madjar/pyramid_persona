@@ -117,7 +117,7 @@ Here is, in details, what including `pyramid_persona` does :
 
 - it defines an authentication policy, an authorization policy, and a session factory     (this is needed for csrf
   protection, and is why we need a secret). Defaults are  `AuthTktAuthenticationPolicy`, `ACLAuthorizationPolicy` and
-  `UnencryptedCookieSessionFactoryConfig`. You can override it if you prefer.
+  `SignedCookieSessionFactory`. You can override it if you prefer.
 - it adds a `persona_js` request attribute containing the javascript code needed to make persona work.
 - it adds a `persona_button` request attribute containing html code for quickly putting a login button.
 - it defines the `/login` and `/logout` views to handle the persona workflow.
