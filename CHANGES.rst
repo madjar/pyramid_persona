@@ -1,3 +1,14 @@
+1.6.1
+-----
+
+- Forgot to add a changelog to the previous release
+
+1.6
+---
+
+- Allow setting (optional) came_from value with url parameter
+- Switch to SignedCookieSessionFactory
+
 1.5
 ---
 
